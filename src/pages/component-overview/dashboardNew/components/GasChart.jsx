@@ -14,11 +14,12 @@ const GasChart = ({ data }) => {
       <YAxis />
       <Tooltip />
       <Legend />
-      <Line type="monotone" dataKey="NH3" stroke="#FF5733" activeDot={{ r: 8 }} />
-      <Line type="monotone" dataKey="NOx" stroke="#33FF57" />
-      <Line type="monotone" dataKey="C6H6" stroke="#3357FF" />
-      <Line type="monotone" dataKey="C2H5OH" stroke="#FF33A6" />
-      <Line type="monotone" dataKey="CO2" stroke="#FFC300" />
+      <Line type="monotone" dataKey="CO2" stroke="#FF5733" activeDot={{ r: 8 }} />
+      <Line type="monotone" dataKey="CO" stroke="#33FF57" />
+      <Line type="monotone" dataKey="TVOC" stroke="#3357FF" />
+      <Line type="monotone" dataKey="Ethanol" stroke="#FF33A6" />
+      <Line type="monotone" dataKey="SO2" stroke="#FFC300" />
+      <Line type="monotone" dataKey="NO2" stroke="#00C3FF" />
     </LineChart>
   );
 };

@@ -12,3 +12,4 @@ scikit-fuzzy
 networkx
 flask
 paho-mqtt
+pymongo

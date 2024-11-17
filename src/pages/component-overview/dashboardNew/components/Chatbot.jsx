@@ -12,7 +12,7 @@ export default function Chatbot({ aqi, advice }) {
           </Card>
         </Col>
         <Col span={16}>
-          <Card className="advice-card" title="Lời khuyên từ Chatbot">
+          <Card className="advice-card">
             <p>{advice}</p>
           </Card>
         </Col>

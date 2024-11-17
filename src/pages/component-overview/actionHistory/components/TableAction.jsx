@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
-import fakeData from './fakeData';  // Import dữ liệu giả từ file fakeData.js
 
 const columns = [
   {
@@ -14,8 +13,7 @@ const columns = [
     width: 200,
     filters: [
       { text: 'Đèn', value: 'Đèn' },
-      { text: 'Quạt', value: 'Quạt' },
-      { text: 'Điều Hòa', value: 'Điều Hòa' },
+      { text: 'Chế độ', value: 'Chế độ' },
     ],
     onFilter: (value, record) => record.deviceName.includes(value),
   },
@@ -23,55 +21,72 @@ const columns = [
     title: 'Hành động',
     dataIndex: 'action',
     width: 100,
-    filters: [
-      { text: 'Bật', value: 'Bật' },
-      { text: 'Tắt', value: 'Tắt' },
-    ],
-    onFilter: (value, record) => record.action.includes(value),
   },
   {
     title: 'Thời gian',
     dataIndex: 'time',
     width: 200,
-    // Giả sử bạn muốn lọc theo một khoảng thời gian cụ thể
-    filters: [
-      { text: 'Hôm nay', value: 'today' },
-      { text: 'Hôm qua', value: 'yesterday' },
-      { text: 'Tuần này', value: 'this_week' },
-    ],
-    onFilter: (value, record) => {
-      const today = new Date();
-      const recordDate = new Date(record.time);
-      switch (value) {
-        case 'today':
-          return recordDate.toDateString() === today.toDateString();
-        case 'yesterday':
-          const yesterday = new Date(today);
-          yesterday.setDate(yesterday.getDate() - 1);
-          return recordDate.toDateString() === yesterday.toDateString();
-        case 'this_week':
-          const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-          return recordDate >= startOfWeek;
-        default:
-          return false;
-      }
-    },
   },
 ];
 
-const TableAction = () => (
-  <Table
-    columns={columns}
-    dataSource={fakeData}  // Sử dụng dữ liệu giả đã import
-    pagination={{
-      defaultPageSize: 10,  // Số lượng bản ghi mặc định mỗi trang
-      showSizeChanger: true,  // Cho phép thay đổi số lượng bản ghi mỗi trang
-      pageSizeOptions: ['5', '10', '15', '20'],  // Các tùy chọn số lượng bản ghi mỗi trang
-    }}
-    scroll={{
-      y: 500,
-    }}
-  />
-);
+const TableAction = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch dữ liệu từ API
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch('http://localhost:5000/api/history');
+        const result = await response.json();
+        // Map dữ liệu từ API
+        const typeMap = {
+          light: 'Đèn',
+          door: 'Cửa',
+          fan: 'Quạt',
+          mode: 'Chế độ tự động',
+          light_timer: 'Bộ đếm tắt đèn',
+        };
+        
+        const mappedData = result.map((item) => ({
+          id: item._id,
+          deviceName: typeMap[item.type] || 'Thiết bị không xác định', // Ánh xạ type thành tên thiết bị
+          action:
+            item.type === 'light_timer'
+              ? `Thời gian: ${item.duration / 60} phút`
+              : item.state === 'on'
+              ? 'Bật'
+              : 'Tắt',
+          time: new Date(item.timestamp).toLocaleString(), // Format thời gian
+        }));
+        setData(mappedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <Table
+      columns={columns}
+      dataSource={data}
+      rowKey="id" // Đặt key duy nhất cho mỗi hàng
+      loading={loading} // Hiển thị trạng thái loading
+      pagination={{
+        defaultPageSize: 20,
+        showSizeChanger: true,
+        pageSizeOptions: ['5', '10', '15', '20'],
+      }}
+      scroll={{
+        y: 500,
+      }}
+    />
+  );
+};
 
 export default TableAction;
