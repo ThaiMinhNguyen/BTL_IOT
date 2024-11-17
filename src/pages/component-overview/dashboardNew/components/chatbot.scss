@@ -1,0 +1,25 @@
+.chatbot {
+    margin-bottom: 20px;
+    
+    .ant-row {
+      display: flex; /* Đảm bảo các phần tử trong Row được xếp theo chiều ngang */
+      align-items: stretch; /* Tạo điều kiện cho các phần tử con có chiều cao bằng nhau */
+    }
+  
+    .aqi-card, .advice-card {
+      height: 100%; /* Đảm bảo các card có chiều cao bằng nhau */
+      display: flex;
+      flex-direction: column; /* Đảm bảo nội dung trong card không bị kéo dài ra ngoài */
+      justify-content: space-between; /* Đảm bảo nội dung bên trong card không bị lệch về phía trên */
+    }
+  
+    .ant-card {
+      display: flex; /* Đảm bảo các thẻ card có thể mở rộng chiều cao */
+      flex-direction: column;
+    }
+  
+    .ant-card-body {
+      flex-grow: 1; /* Cho phép phần thân card co giãn để chiếm không gian còn lại */
+    }
+  }
+  

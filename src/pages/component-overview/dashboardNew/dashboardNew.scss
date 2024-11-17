@@ -1,0 +1,102 @@
+.dashboardNew {
+    padding: 20px;
+    background-color: #f5f5f5;
+  
+    .info-top {
+      margin-bottom: 20px;
+  
+      .temperature-card, .humidity-card {
+        padding: 15px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        text-align: center;
+  
+        h3 {
+          font-size: 18px;
+          color: #333;
+          margin-bottom: 10px;
+        }
+  
+        p {
+          font-size: 20px;
+          font-weight: bold;
+          color: #555;
+        }
+      }
+    }
+  
+    .control-and-quality {
+      margin-bottom: 20px;
+  
+      .control-panel {
+        padding: 15px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+  
+        h3 {
+          font-size: 18px;
+          color: #333;
+          margin-bottom: 15px;
+        }
+  
+        .mode-switch {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+        }
+  
+        .manual-controls {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+  
+          div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+  
+          span {
+            font-size: 16px;
+            color: #555;
+          }
+        }
+      }
+  
+      .quality-list {
+        padding: 15px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+  
+        ul {
+          padding: 0;
+          list-style: none;
+  
+          li {
+            font-size: 16px;
+            color: #333;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+  
+            &:last-child {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+  
+    .chart-section {
+      .chart-container {
+        height: 450px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+    }
+  }
+  

@@ -1,0 +1,128 @@
+.control-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0;
+  height: 450px;
+  overflow-y: auto;
+
+  .mode-switch {
+    margin: 0 20px 20px;
+
+    .ant-card-body {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; // Tạo khoảng cách tự động giữa chữ và công tắc
+      padding: 10px; // Thêm khoảng cách bên trong thẻ
+
+      div {
+        font-size: 16px; // Điều chỉnh kích thước chữ (nếu cần)
+        margin-right: 10px; // Khoảng cách giữa chữ và công tắc
+      }
+
+      .switch {
+        margin: 0; // Xóa bất kỳ margin nào
+      }
+    }
+  }
+
+
+  .card-button {
+    margin: 0 20px 20px;
+
+    .ant-card-body {
+      display: flex;
+      align-items: center;
+
+      .switch {
+        margin-left: auto;
+      }
+
+      .icon {
+        font-size: 24px;
+        margin-right: 10px;
+        transition: all 0.3s ease;
+
+        &.spinning {
+          animation: spin 1s infinite linear;
+        }
+
+        &.fan-lit {
+          color: #32CD32; // Màu xanh lá cây khi quạt bật
+        }
+
+        &.light-lit {
+          color: #ffeb3b; // Màu vàng khi đèn bật
+        }
+
+        &.door-open {
+          color: #32CD32; // Màu xanh lá cây khi cửa mở
+        }
+
+        &.door-closed {
+          color: #f00; // Màu đỏ khi cửa đóng
+        }
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    }
+
+    &:hover {
+      transform: translateY(-2px); // Di chuyển thẻ lên một chút
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Tăng độ đậm của đổ bóng
+    }
+  }
+
+  .auto-mode {
+    .ant-card-body {
+      display: flex;
+      flex-direction: column; // Sắp xếp theo chiều dọc
+      align-items: flex-start; // Căn trái các phần tử
+
+      .time-setting {
+        display: flex;
+        align-items: center; // Căn giữa theo chiều ngang
+        flex-wrap: wrap; // Hỗ trợ màn hình nhỏ
+        gap: 10px; // Khoảng cách giữa các phần tử
+      }
+
+      .countdown-timer {
+        margin-top: 15px; // Thêm khoảng cách với khối nhập thời gian
+        font-size: 18px;
+        font-weight: bold;
+        color: #ff4500; // Màu cam cho đồng hồ đếm ngược
+        text-align: center; // Căn giữa nội dung
+        width: 100%; // Trải rộng toàn bộ chiều ngang
+        animation: fadeIn 1s ease-out; // Hiệu ứng làm đồng hồ hiện ra
+
+        @keyframes fadeIn {
+          0% {
+            opacity: 0;
+          }
+
+          100% {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+
+
+  .manual-mode {
+    display: flex;
+    flex-direction: column;
+
+    .card-button {
+      margin-bottom: 20px;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+AQI (Air Quality Index – chỉ số chất lượng không khí) là chỉ số báo cáo chất lượng không khí hàng ngày, sử dụng tương tự như thước đo để đánh giá không khí xung quanh chúng ta sạch sẽ hay ô nhiễm, nếu ô nhiễm thì mức độ cao hay thấp. Chỉ số AQI tập trung vào sự ảnh hưởng tới sức khỏe người dân có thể gặp trong vòng vài giờ hoặc vài ngày sau khi hít thở không khí ô nhiễm.
+Theo như tính toán từ các chuyên gia thuốc EPA – Cơ quan bảo vệ môi trường Hoa Kỳ cho biết, chỉ số AQI có những thông số ô nhiễm môi trường phổ biến bao gồm:
+
+– Ozone mặt đất: Những chất ô nhiễm xuất phát từ nhà máy, xí nghiệp, xe cộ,… rồi phản ứng hóa học với ánh sáng của mặt trời.
+
+– Ô nhiễm phân tử: Đánh giá qua chỉ số PM 2.5, PM 10. Hạt bụi này sẽ đi vào trong đường hô hấp của con người thông qua hít thở. Chúng được hình thành từ những chất như nitơ, sunphua, cacbon cũng những hợp chất khác. Ngoài ra loại hạt PM 2.5 còn được sinh ra từ việc đốt rác thải, nhiên liệu hóa thạch, bụi công trình, nhiên liệu xe cộ, hút thuốc, phá rừng.
+
+– Chỉ số sulfur dioxide (SO2), carbon monoxide (CO), nitrogen dioxide (NO2)
