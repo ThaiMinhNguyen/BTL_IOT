@@ -33,6 +33,8 @@ const ControlPanel = ({ onChange }) => {
     }
   };
 
+  
+
   const handleModeChange = (checked) => {
     setIsAutoMode(checked);
     if (!checked) {
@@ -118,8 +120,6 @@ const ControlPanel = ({ onChange }) => {
               type="primary"
               onClick={() => {
                 if (lightTime > 0) {
-                  setCountdown(lightTime * 60); // Reset thời gian đếm ngược
-                  setIsCounting(true);
                   sendDataToServer({
                     type: "light_timer",
                     duration: lightTime * 60, // Gửi thời gian dưới dạng giây
@@ -132,12 +132,7 @@ const ControlPanel = ({ onChange }) => {
             </Button>
           </div>
 
-          {/* Hiển thị đồng hồ đếm ngược bên dưới khối nhập */}
-          {isCounting && (
-            <div className="countdown-timer">
-              {`Thời gian còn lại: ${Math.floor(countdown / 60)}:${String(countdown % 60).padStart(2, '0')}`}
-            </div>
-          )}
+          
         </Card>
       ) : (
         // Chế độ thủ công: bật/tắt thiết bị

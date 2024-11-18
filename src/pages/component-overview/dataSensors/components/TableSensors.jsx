@@ -3,22 +3,23 @@ import { Table, Input, message } from 'antd';
 
 const { Search } = Input;
 
+// Cấu trúc cột cho bảng
 const columns = [
   {
     title: 'ID',
-    dataIndex: 'id',
-    sorter: (a, b) => a.id - b.id, // Sắp xếp theo ID
+    dataIndex: '_id',
+    sorter: (a, b) => a._id.localeCompare(b._id),
   },
   {
     title: 'Temperature',
-    dataIndex: 'temperature',
-    sorter: (a, b) => a.temperature - b.temperature, // Sắp xếp theo Nhiệt độ
+    dataIndex: ['dht11', 'temperature'], // Truy cập giá trị lồng nhau
+    sorter: (a, b) => a.dht11.temperature - b.dht11.temperature,
     filters: [
       { text: '20°C - 25°C', value: '20-25' },
       { text: '25°C - 30°C', value: '25-30' },
     ],
     onFilter: (value, record) => {
-      const temp = parseFloat(record.temperature);
+      const temp = record.dht11.temperature;
       if (value === '20-25') return temp >= 20 && temp < 25;
       if (value === '25-30') return temp >= 25 && temp < 30;
       return true;
@@ -26,151 +27,125 @@ const columns = [
   },
   {
     title: 'Humidity',
-    dataIndex: 'humidity',
-    sorter: (a, b) => a.humidity - b.humidity, // Sắp xếp theo Độ ẩm
+    dataIndex: ['dht11', 'humidity'],
+    sorter: (a, b) => a.dht11.humidity - b.dht11.humidity,
     filters: [
       { text: '50% - 60%', value: '50-60' },
       { text: '60% - 70%', value: '60-70' },
     ],
     onFilter: (value, record) => {
-      const humidity = parseFloat(record.humidity);
+      const humidity = record.dht11.humidity;
       if (value === '50-60') return humidity >= 50 && humidity < 60;
       if (value === '60-70') return humidity >= 60 && humidity < 70;
       return true;
     },
   },
   {
-    title: 'Light',
-    dataIndex: 'light',
-    sorter: (a, b) => a.light - b.light, // Sắp xếp theo Ánh sáng
-    filters: [
-      { text: '0 - 50 lux', value: '0-50' },
-      { text: '50 - 100 lux', value: '50-100' },
-    ],
-    onFilter: (value, record) => {
-      const light = parseFloat(record.light);
-      if (value === '0-50') return light >= 0 && light < 50;
-      if (value === '50-100') return light >= 50 && light < 100;
-      return true;
-    },
+    title: 'Light (Lux)',
+    dataIndex: ['bh1750', 'lux'],
+    sorter: (a, b) => a.bh1750.lux - b.bh1750.lux,
   },
   {
-    title: 'Time',
-    dataIndex: 'time',
-    sorter: (a, b) => new Date(a.time) - new Date(b.time),
+    title: 'TVOC (ppm)',
+    dataIndex: ['mq135', 'tvocppm'],
+    sorter: (a, b) => a.mq135.tvocppm - b.mq135.tvocppm,
+  },
+  {
+    title: 'CO2 (ppm)',
+    dataIndex: ['mq135', 'co2ppm'],
+    sorter: (a, b) => a.mq135.co2ppm - b.mq135.co2ppm,
+  },
+  {
+    title: 'Ethanol (ppm)',
+    dataIndex: ['mq135', 'ethanolppm'],
+    sorter: (a, b) => a.mq135.ethanolppm - b.mq135.ethanolppm,
+  },
+  {
+    title: 'Timestamp',
+    dataIndex: 'timestamp',
+    sorter: (a, b) => a.timestamp - b.timestamp,
+    render: (timestamp) => new Date(timestamp * 1000).toLocaleString(),
   },
 ];
 
 const TableSensors = () => {
-  const [data, setData] = useState([]);  // Khởi tạo state cho dữ liệu thực
-  const [loading, setLoading] = useState(false);  // Trạng thái tải dữ liệu
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [tableParams, setTableParams] = useState({
     pagination: {
       current: 1,
-      pageSize: 10,  // Số lượng bản ghi mỗi trang mặc định
-      showSizeChanger: true, // Hiển thị tùy chọn chọn số lượng bản ghi mỗi trang
-      pageSizeOptions: ['5', '10', '20', '50'], // Các tùy chọn số lượng bản ghi mỗi trang
-      total: 0, // Số lượng bản ghi ban đầu là 0
+      pageSize: 10,
+      showSizeChanger: true,
+      pageSizeOptions: ['5', '10', '20', '50'],
+      total: 0,
     },
   });
 
-  // Hàm fetch dữ liệu từ API
   const fetchData = async () => {
-    setLoading(true);  // Bắt đầu tải dữ liệu
+    setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/sensor_data');// URL của API
-      const result = await response.json();  // Parse kết quả JSON
-      console.log(result);
-      setData(result);  // Cập nhật dữ liệu vào state
+      const response = await fetch('http://localhost:5000/api/sensors/history');
+      const result = await response.json();
+      setData(result);
       setTableParams({
         ...tableParams,
         pagination: {
           ...tableParams.pagination,
-          total: result.length,  // Cập nhật tổng số lượng bản ghi
+          total: result.length,
         },
       });
     } catch (error) {
-      message.error('Lỗi khi tải dữ liệu!');  // Hiển thị thông báo lỗi
+      message.error('Error fetching data!');
     } finally {
-      setLoading(false);  // Kết thúc tải dữ liệu
+      setLoading(false);
     }
   };
 
-  // Sử dụng useEffect để gọi fetchData khi component mount
   useEffect(() => {
     fetchData();
-  }, []);  // Chỉ gọi một lần khi component render lần đầu
+  }, []);
 
   const handleTableChange = (pagination, filters, sorter) => {
-    const filteredData = data
-      .filter(item => {
-        for (let key in filters) {
-          if (filters[key] && filters[key].length > 0) {
-            const filterFunc = columns.find(col => col.dataIndex === key).onFilter;
-            if (!filters[key].some(val => filterFunc(val, item))) {
-              return false;
-            }
-          }
-        }
-        return true;
-      })
-      .sort((a, b) => {
-        if (!sorter.order) {
-          return 0;
-        }
-        const compareFunc = columns.find(col => col.dataIndex === sorter.field).sorter;
-        const compareResult = compareFunc(a, b);
-        return sorter.order === 'ascend' ? compareResult : -compareResult;
-      });
-
     setTableParams({
-      pagination: {
-        ...pagination,
-        total: filteredData.length,  // Cập nhật số lượng bản ghi sau khi lọc
-      },
+      pagination,
       filters,
       sorter,
     });
-
-    setData(filteredData.slice((pagination.current - 1) * pagination.pageSize, pagination.current * pagination.pageSize));
   };
 
   const onSearch = (value) => {
-    const filteredData = data.filter(item =>
-      item.time.includes(value)
+    const filteredData = data.filter((item) =>
+      new Date(item.timestamp * 1000).toLocaleString().includes(value)
     );
     setData(filteredData);
     setTableParams({
       ...tableParams,
       pagination: {
         ...tableParams.pagination,
-        total: filteredData.length, // Cập nhật số lượng bản ghi sau khi tìm kiếm
+        total: filteredData.length,
       },
     });
   };
 
   return (
-    <div className='dataSensors'>
-      <div className='search'>
-        <Search
-          placeholder="Tìm kiếm theo thời gian"
-          onSearch={onSearch}
-          style={{
-            width: 200,
-          }}
-        />
-      </div>
-      <div className='tableData'>
-        <Table
-          columns={columns}
-          rowKey="id"
-          dataSource={data}
-          loading={loading}  // Trạng thái tải
-          pagination={tableParams.pagination}
-          onChange={handleTableChange}
-          scroll={{ y: 400 }}
-        />
-      </div>
+    <div>
+      <Search
+        placeholder="Search by time"
+        onSearch={onSearch}
+        style={{
+          width: 200,
+          marginBottom: '20px',
+        }}
+      />
+      <Table
+        columns={columns}
+        rowKey="_id"
+        dataSource={data}
+        loading={loading}
+        pagination={tableParams.pagination}
+        onChange={handleTableChange}
+        scroll={{ y: 400 }}
+      />
     </div>
   );
 };

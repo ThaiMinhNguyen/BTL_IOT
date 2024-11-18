@@ -41,6 +41,7 @@ def predict_RF(temperature, humidity, tvoc, eco2, raw_ethanol):
 client = MongoClient("mongodb://localhost:27017/")
 db = client["home"]  # Tên database
 items_collection = db["control_panel"]  # Tên collection
+sensor_collection = db["sensor"]
 
 # API để lấy dữ liệu từ cảm biến
 @app.route('/api/sensors', methods=['GET'])
@@ -77,11 +78,37 @@ def get_sensor_data():
         "bh1750": bh1750_data,
         "mq135": mq135_data
     }))
+
+    sensor_data = {
+        "dht11": dht11_data,
+        "bh1750": bh1750_data,
+        "mq135": mq135_data,
+        "timestamp": time.time()  # Lưu thời gian hiện tại vào database
+    }
+    
+    # Chèn dữ liệu vào collection 'sensor'
+    sensor_collection.insert_one(sensor_data)
+
     return jsonify({
         "dht11": dht11_data,
         "bh1750": bh1750_data,
         "mq135": mq135_data
     }), 200
+
+@app.route('/api/sensors/history', methods=['GET'])
+def get_sensor_history():
+    # Lấy tham số 'limit' từ query string (số bản ghi muốn lấy, mặc định là 100)
+    limit = int(request.args.get('limit', 100))  # Số lượng bản ghi (default: 100)
+    
+    # Truy vấn dữ liệu từ MongoDB, sắp xếp theo trường 'timestamp' giảm dần, và giới hạn số lượng bản ghi
+    records = list(sensor_collection.find().sort("timestamp", -1).limit(limit))
+    
+    # Chuyển đổi ObjectId thành chuỗi để trả về dưới dạng JSON
+    for record in records:
+        record["_id"] = str(record["_id"])  # Convert ObjectId to string
+    
+    # Trả về dữ liệu dưới dạng JSON
+    return jsonify(records), 200
 
 @app.route('/api/aqi_chatbot', methods=['GET'])
 def get_aqi_chatbot():
@@ -138,6 +165,8 @@ def save_control_data():
             control_topic("home/fan", mode_fan)
             control_topic("home/door", mode_door)
             control_topic("home/light", mode_light)
+        elif data['type'] == "light_timer":
+            time_auto = data['duration'] 
         # Lưu vào MongoDB
         items_collection.insert_one(data)
         
