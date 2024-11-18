@@ -1,0 +1,15 @@
+google-generativeai 
+langchain-google-genai 
+chromadb 
+pypdf
+langchain-community 
+langchain-core
+joblib
+numpy
+pandas
+scikit-learn
+scikit-fuzzy
+networkx
+flask
+paho-mqtt
+pymongo

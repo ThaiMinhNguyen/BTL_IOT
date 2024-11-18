@@ -1,0 +1,14 @@
+.profiles-container {
+    .ant-row {
+      margin-top: 20px;
+    }
+  
+    .ant-col {
+      transition: transform 0.3s ease;
+  
+      &:hover {
+        transform: translateY(-5px);
+      }
+    }
+  }
+  

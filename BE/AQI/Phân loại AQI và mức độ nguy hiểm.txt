@@ -1,0 +1,11 @@
++ Từ 0 – 50: Mức tốt
+
++ Từ 51 – 100: Chất lượng không khí trung bình có thể chấp nhận được
+
++ Từ 101 – 150: Mức độ kém gây ảnh hưởng đến sức khỏe
+
++ Từ 151 – 200: Mức xấu, cần hạn chế ra ngoài đường khi không cần thiết
+
++ Từ 201 – 300: Mức rất xấu, cảnh báo gây nguy hiểm đến sức khỏe
+
++ Từ 301 – 500: Mức báo động, ảnh hưởng nghiêm trọng đến sức khỏe
